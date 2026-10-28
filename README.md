@@ -84,8 +84,9 @@ variables → Actions → Variables*), tutte facoltative:
    progetto.
 2. Console Google Cloud del progetto → *IAM e amministrazione* → *Account di
    servizio* → crea un account con i ruoli **Amministratore Firebase
-   Hosting**, **Visualizzatore chiavi API** e **Utente account di servizio**,
-   e generane una chiave JSON.
+   Hosting**, **Visualizzatore chiavi API**, **Utente account di servizio** e
+   **Consumatore di Service Usage** (senza quest'ultimo il deploy fallisce
+   con 403 su `serviceusage.services.get`), e generane una chiave JSON.
 3. Su GitHub, nel repository → *Settings → Secrets and variables → Actions*
    → *New repository secret*: nome `FIREBASE_SERVICE_ACCOUNT`, valore il
    contenuto del file JSON. Poi il file si può cancellare.
