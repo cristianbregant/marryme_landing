@@ -289,8 +289,10 @@ class PerGliSposi extends StatelessComponent {
                 .text(testo),
               ]),
           ]),
-          a(href: linkPannello, classes: 'pulsante primario', [
-            .text('Entra nell\'area sposi'),
+          // le coppie nuove partono dalla registrazione; "Area sposi" in
+          // alto resta il login
+          a(href: '$linkPannello/registrazione', classes: 'pulsante primario', [
+            .text('Create il vostro account'),
             icone.ArrowRight(width: 18.px, height: 18.px),
           ]),
         ]),
