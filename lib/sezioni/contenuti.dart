@@ -289,11 +289,10 @@ class PerGliSposi extends StatelessComponent {
                 .text(testo),
               ]),
           ]),
-          if (linkPannello.isNotEmpty)
-            a(href: linkPannello, classes: 'pulsante primario', [
-              .text('Entra nell\'area sposi'),
-              icone.ArrowRight(width: 18.px, height: 18.px),
-            ]),
+          a(href: linkPannello, classes: 'pulsante primario', [
+            .text('Entra nell\'area sposi'),
+            icone.ArrowRight(width: 18.px, height: 18.px),
+          ]),
         ]),
         div(
           classes: 'pannello rivela',

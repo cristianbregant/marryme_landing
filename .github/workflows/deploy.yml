@@ -1,0 +1,68 @@
+# Pubblica la landing su Firebase Hosting:
+# - push su main → sito pubblico
+# - pull request → anteprima temporanea, con il link in un commento
+name: Deploy su Firebase Hosting
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  checks: write
+  pull-requests: write
+
+# un deploy alla volta per branch; quelli vecchi si annullano
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    # le pull request dai fork non hanno accesso al segreto di Firebase
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: 3.13.5
+
+      - name: Dipendenze
+        run: dart pub get
+
+      - name: Jaspr CLI
+        run: dart pub global activate jaspr_cli 0.23.5
+
+      - name: Build statica
+        # link da Settings → Secrets and variables → Actions → Variables
+        # (es. PANNELLO_URL=https://app.marryme.example)
+        env:
+          PANNELLO_URL: ${{ vars.PANNELLO_URL }}
+          APP_STORE_URL: ${{ vars.APP_STORE_URL }}
+          PLAY_STORE_URL: ${{ vars.PLAY_STORE_URL }}
+        run: |
+          # solo le variabili impostate: un valore vuoto toglierebbe quello di default
+          opzioni=()
+          for nome in PANNELLO_URL APP_STORE_URL PLAY_STORE_URL; do
+            [ -n "${!nome}" ] && opzioni+=("--dart-define=$nome=${!nome}")
+          done
+          jaspr build "${opzioni[@]}"
+
+      - name: Controllo della build
+        run: |
+          test -f build/jaspr/index.html
+          test -f build/jaspr/i/index.html
+
+      - name: Deploy
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          projectId: matrimonio-6f724
+          # main va sul sito; le pull request su un canale di anteprima
+          channelId: ${{ github.event_name == 'pull_request' && '' || 'live' }}
+          expires: 7d

@@ -50,3 +50,48 @@ Non è indicizzata dai motori di ricerca.
 
 Il telefono, la notifica e la finestra del pannello sono disegnati in HTML e
 CSS: si aggiornano insieme al codice, senza screenshot da rifare.
+
+## Pubblicazione su Firebase Hosting
+
+La GitHub Action `.github/workflows/deploy.yml` fa la build statica e la
+pubblica sul progetto Firebase `matrimonio-6f724`:
+
+- a ogni push su `main` aggiorna il sito pubblico;
+- a ogni pull request pubblica un'anteprima temporanea (7 giorni) e ne
+  scrive il link nella pull request;
+- si può lanciare a mano da *Actions → Deploy su Firebase Hosting → Run workflow*.
+
+`firebase.json` pubblica solo la build (non le cartelle di servizio di Jaspr)
+e serve `i/index.html` per ogni indirizzo `/i/<codice>`.
+
+La landing va sul sito principale del progetto (il dominio, es.
+`marryme.example`); il pannello degli sposi (`marryme_web`) ha il suo sito,
+sul sottodominio `app.` (es. `app.marryme.example`), e si pubblica dal suo
+repository. I pulsanti "Area sposi" della landing portano lì.
+
+I link si impostano con le variabili del repository (*Settings → Secrets and
+variables → Actions → Variables*), tutte facoltative:
+
+| Variabile        | Default                         |
+| ---------------- | ------------------------------- |
+| `PANNELLO_URL`   | `https://app.marryme.example`   |
+| `APP_STORE_URL`  | nessuno: "Presto disponibile"   |
+| `PLAY_STORE_URL` | nessuno: "Presto disponibile"   |
+
+### Configurazione, una volta sola
+
+1. Console Firebase → *Hosting* → *Inizia*, per attivare l'hosting sul
+   progetto.
+2. Console Google Cloud del progetto → *IAM e amministrazione* → *Account di
+   servizio* → crea un account con i ruoli **Amministratore Firebase
+   Hosting**, **Visualizzatore chiavi API** e **Utente account di servizio**,
+   e generane una chiave JSON.
+3. Su GitHub, nel repository → *Settings → Secrets and variables → Actions*
+   → *New repository secret*: nome `FIREBASE_SERVICE_ACCOUNT`, valore il
+   contenuto del file JSON. Poi il file si può cancellare.
+
+In alternativa, con la Firebase CLI (`firebase init hosting:github`) i passi
+2 e 3 si fanno in automatico: in quel caso il segreto si chiama
+`FIREBASE_SERVICE_ACCOUNT_MATRIMONIO_6F724` e va aggiornato nel workflow.
+
+Per un dominio vostro: *Hosting → Aggiungi dominio personalizzato*.

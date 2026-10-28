@@ -24,10 +24,8 @@ class Barra extends StatelessComponent {
             a(href: '#domande', [.text('Domande')]),
           ],
         ),
-        if (linkPannello.isNotEmpty)
-          a(href: linkPannello, classes: 'pulsante secondario barra-pannello', [.text('Area sposi')])
-        else
-          a(href: '#scarica', classes: 'pulsante secondario barra-pannello', [.text('Scarica l\'app')]),
+        // il pannello è un altro progetto, sul suo sottodominio
+        a(href: linkPannello, classes: 'pulsante secondario barra-pannello', [.text('Area sposi')]),
       ]),
     ]);
   }
