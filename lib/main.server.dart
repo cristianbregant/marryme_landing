@@ -28,11 +28,16 @@ void main() {
           ('og:type', 'website'),
           ('og:title', _titolo),
           ('og:description', _descrizione),
-          ('og:image', 'immagini/fiori.jpg'),
+          // indirizzo assoluto: vale anche per le pagine /i/<codice>
+          ('og:image', '/immagini/fiori.jpg'),
           ('og:locale', 'it_IT'),
         ])
           meta(attributes: {'property': proprieta, 'content': valore}),
-        link(rel: 'icon', type: 'image/png', href: 'favicon.png'),
+        // icona dell'app MarryMe; indirizzi assoluti, come sopra
+        link(rel: 'icon', href: '/favicon.ico', attributes: {'sizes': '16x16 32x32 48x48'}),
+        link(rel: 'icon', type: 'image/png', href: '/icon-192.png', attributes: {'sizes': '192x192'}),
+        link(rel: 'apple-touch-icon', href: '/apple-touch-icon.png'),
+        link(rel: 'manifest', href: '/site.webmanifest'),
         link(rel: 'preconnect', href: 'https://fonts.googleapis.com'),
         link(rel: 'preconnect', href: 'https://fonts.gstatic.com', attributes: {'crossorigin': ''}),
         link(

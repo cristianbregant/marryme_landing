@@ -18,7 +18,7 @@
         "headers": [{ "key": "Cache-Control", "value": "public, max-age=3600" }]
       },
       {
-        "source": "**/*.@(jpg|jpeg|png|webp|svg|ico)",
+        "source": "**/*.@(jpg|jpeg|png|webp|svg|ico|webmanifest)",
         "headers": [{ "key": "Cache-Control", "value": "public, max-age=604800" }]
       }
     ]
