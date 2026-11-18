@@ -20,3 +20,10 @@ jaspr:
   mode: static
   # diversa da API (8080) e pannello (8081), anche per la generazione statica
   port: 8082
+
+# Con Dart 3.14 (Flutter 3.50) jaspr 0.23 non si risolve: jaspr_builder 0.23.5
+# vuole analyzer 12, che c'è solo fino a build_web_compilers 4.8.5, e quella
+# dichiara Dart < 3.14. Si forza la 4.8.5 (build provata identica a quella
+# fatta con Dart 3.13). Da togliere con jaspr 0.24 stabile.
+dependency_overrides:
+  build_web_compilers: 4.8.5
