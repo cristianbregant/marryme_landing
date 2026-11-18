@@ -6,15 +6,21 @@ con gli stili dentro e senza JavaScript.
 
 ## Avvio in locale
 
+La versione di Dart è fissata in `.fvmrc` con [FVM](https://fvm.app):
+Flutter 3.47.6, cioè Dart 3.13.5, la stessa della GitHub Action. Jaspr 0.23
+non funziona con Dart 3.14 (le sue dipendenze si escludono a vicenda): fino a
+jaspr 0.24 stabile i comandi passano da FVM. Una volta sola `fvm install`,
+poi:
+
 ```sh
-dart pub get
-jaspr serve --port 8082   # http://localhost:8082
+fvm dart pub get
+fvm exec jaspr serve --port 8082   # http://localhost:8082
 ```
 
 ## Build
 
 ```sh
-jaspr build \
+fvm exec jaspr build \
   --dart-define=APP_STORE_URL=https://apps.apple.com/... \
   --dart-define=PLAY_STORE_URL=https://play.google.com/... \
   --dart-define=PANNELLO_URL=https://pannello.esempio.it
